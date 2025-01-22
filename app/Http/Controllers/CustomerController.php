@@ -7,13 +7,13 @@ use App\Http\Requests\UpdateCustomerRequest;
 use App\Http\Resources\CustomerCollection;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
-use App\Services\CustomerQuery;
+use App\Filters\CustomersFilter;
 
 class CustomerController extends Controller
 {
-    public function index(): CustomerCollection
+    public function index(CustomersFilter $filter): CustomerCollection
     {
-        if (!empty($queryItems = CustomerQuery::transform(request()))) {
+        if (!empty($queryItems = $filter->transform(request()))) {
             return new CustomerCollection(Customer::where($queryItems)->paginate());
         }
 

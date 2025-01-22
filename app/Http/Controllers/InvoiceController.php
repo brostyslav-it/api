@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\InvoicesFilter;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
 use App\Http\Resources\InvoiceCollection;
@@ -10,8 +11,12 @@ use App\Models\Invoice;
 
 class InvoiceController extends Controller
 {
-    public function index(): InvoiceCollection
+    public function index(InvoicesFilter $filter): InvoiceCollection
     {
+        if (!empty($queryItems = $filter->transform(request()))) {
+            return new InvoiceCollection(Invoice::where($queryItems)->paginate());
+        }
+
         return new InvoiceCollection(Invoice::paginate());
     }
 
