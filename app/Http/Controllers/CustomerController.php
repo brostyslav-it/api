@@ -4,18 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Resources\CustomerCollection;
+use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(): CustomerCollection
     {
-
-    }
-
-    public function create()
-    {
-
+        return new CustomerCollection(Customer::paginate());
     }
 
     public function store(StoreCustomerRequest $request)
@@ -23,14 +20,9 @@ class CustomerController extends Controller
 
     }
 
-    public function show(Customer $customer)
+    public function show(Customer $customer): CustomerResource
     {
-
-    }
-
-    public function edit(Customer $customer)
-    {
-
+        return new CustomerResource($customer);
     }
 
     public function update(UpdateCustomerRequest $request, Customer $customer)
