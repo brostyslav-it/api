@@ -6,3 +6,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('customers', CustomerController::class);
 Route::apiResource('invoices', InvoiceController::class);
+Route::post('/invoices/bulk', [InvoiceController::class, 'bulkStore']);
