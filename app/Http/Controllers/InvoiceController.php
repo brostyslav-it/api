@@ -13,11 +13,7 @@ class InvoiceController extends Controller
 {
     public function index(InvoicesFilter $filter): InvoiceCollection
     {
-        if (!empty($queryItems = $filter->transform(request()))) {
-            return new InvoiceCollection(Invoice::where($queryItems)->paginate());
-        }
-
-        return new InvoiceCollection(Invoice::paginate());
+        return new InvoiceCollection(Invoice::where($filter->transform(request()))->paginate()->appends(request()->query()));
     }
 
     public function store(StoreInvoiceRequest $request)
