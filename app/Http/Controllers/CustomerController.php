@@ -7,7 +7,7 @@ use App\Http\Requests\Customer\StoreCustomerRequest;
 use App\Http\Requests\Customer\UpdateCustomerRequest;
 use App\Http\Resources\CustomerCollection;
 use App\Http\Resources\CustomerResource;
-use App\Models\Customer;
+use App\Models\Customer\Customer;
 
 class CustomerController extends Controller
 {
@@ -45,6 +45,9 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer): void
     {
+        if (!request()->user()->tokenCan('delete')) {
+            abort(403);
+        }
         $customer->delete();
     }
 }

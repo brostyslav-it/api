@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,7 +18,7 @@ class RegisterRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'unique:users'],
-            'roles' => ['required', 'string', Rule::in(['admin', 'poster', 'reader'])],
+            'roles' => ['required', 'string', Rule::in(UserRole::toArray())],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }

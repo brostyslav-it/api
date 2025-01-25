@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Filters\InvoicesFilter;
-use App\Http\Requests\Invoice\BulkStoreInvoiceRequest;
+use App\Http\Requests\Invoice\StoreInvoiceRequest;
 use App\Http\Requests\Invoice\UpdateInvoiceRequest;
 use App\Http\Resources\InvoiceCollection;
 use App\Http\Resources\InvoiceResource;
-use App\Models\Invoice;
+use App\Models\Invoice\Invoice;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 
@@ -18,7 +18,7 @@ class InvoiceController extends Controller
         return new InvoiceCollection(Invoice::where($filter->transform(request()))->paginate()->appends(request()->query()));
     }
 
-    public function store(BulkStoreInvoiceRequest $request): JsonResponse
+    public function store(StoreInvoiceRequest $request): JsonResponse
     {
         $bulk = collect($request->all())->map(function (array $value) {
             return Arr::except($value, ['customerId', 'billedAt', 'paidAt']);
@@ -39,6 +39,9 @@ class InvoiceController extends Controller
 
     public function destroy(Invoice $invoice): void
     {
+        if (!request()->user()->tokenCan('delete')) {
+            abort(403);
+        }
         $invoice->delete();
     }
 }

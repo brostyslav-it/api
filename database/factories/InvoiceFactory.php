@@ -2,8 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Customer;
-use App\Models\Invoice;
+use App\Models\Customer\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvoiceFactory extends Factory
