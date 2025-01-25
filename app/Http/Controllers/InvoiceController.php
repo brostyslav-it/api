@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Filters\InvoicesFilter;
-use App\Http\Requests\BulkStoreInvoiceRequest;
-use App\Http\Requests\UpdateInvoiceRequest;
+use App\Http\Requests\Invoice\BulkStoreInvoiceRequest;
+use App\Http\Requests\Invoice\UpdateInvoiceRequest;
 use App\Http\Resources\InvoiceCollection;
 use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice;
