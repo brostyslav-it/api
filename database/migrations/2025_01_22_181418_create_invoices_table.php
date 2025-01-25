@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Customer::class);
+            $table->foreignIdFor(Customer::class)->constrained()->cascadeOnDelete();
             $table->integer('amount');
             $table->enum('status', ['B', 'P', 'V'])->default('B');
             $table->dateTime('billed_at');

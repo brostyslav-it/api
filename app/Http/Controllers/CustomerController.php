@@ -43,8 +43,8 @@ class CustomerController extends Controller
         return new CustomerResource($customer);
     }
 
-    public function destroy(Customer $customer)
+    public function destroy(Customer $customer): void
     {
-
+        $customer->delete();
     }
 }
