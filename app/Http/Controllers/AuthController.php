@@ -13,9 +13,16 @@ class AuthController extends Controller
 {
     public function register(RegisterRequest $request): JsonResponse
     {
+        /** @var $user User */
         $user = User::create($request->all());
 
-        return response()->json(['token' => $user->createToken('auth', UserAbilities::ABILITIES[$user->role])->plainTextToken], 201);
+        return response()->json([
+            'token' => $user->createToken(
+               'auth',
+                UserAbilities::ABILITIES[$user->{'role'}],
+                now()->addWeek(),
+            )->plainTextToken,
+        ], 201);
     }
 
     public function login(LoginRequest $request): JsonResponse
@@ -23,8 +30,16 @@ class AuthController extends Controller
         if (!Auth::attempt($request->all())) {
             return response()->json(['error' => 'Wrong credentials'], 400);
         }
+
+        /** @var $user User */
         $user = Auth::user();
 
-        return response()->json(['token' => $user->createToken('auth', UserAbilities::ABILITIES[$user->role])->plainTextToken]);
+        return response()->json([
+            'token' => $user->createToken(
+               'auth',
+                UserAbilities::ABILITIES[$user->{'role'}],
+                now()->addWeek(),
+            )->plainTextToken,
+        ]);
     }
 }
