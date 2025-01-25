@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class BulkStoreInvoiceRequest extends FormRequest
@@ -23,7 +24,7 @@ class BulkStoreInvoiceRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): Request
     {
         $data = [];
 
