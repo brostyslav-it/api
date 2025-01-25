@@ -11,7 +11,7 @@ class StoreInvoiceRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->tokenCan('create');
     }
 
     public function rules(): array
