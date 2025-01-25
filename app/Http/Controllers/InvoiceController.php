@@ -45,6 +45,7 @@ class InvoiceController extends Controller
         if (!request()->user()->tokenCan('delete')) {
             throw new AccessDeniedHttpException();
         }
+
         $invoice->delete();
     }
 }

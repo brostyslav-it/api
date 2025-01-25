@@ -49,6 +49,7 @@ class CustomerController extends Controller
         if (!request()->user()->tokenCan('delete')) {
             throw new AccessDeniedHttpException();
         }
+
         $customer->delete();
     }
 }
