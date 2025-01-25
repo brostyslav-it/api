@@ -4,6 +4,7 @@ namespace App\Http\Requests\Customer;
 
 use App\Models\Customer\Enums\CustomerType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class UpdateCustomerRequest extends FormRequest
@@ -15,7 +16,7 @@ class UpdateCustomerRequest extends FormRequest
 
     public function rules(): array
     {
-        return $this->method() === 'PUT' ? [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'max:1', Rule::in(CustomerType::toArray())],
             'email' => ['required', 'email', 'max:255', 'unique:customers,id'],
@@ -23,23 +24,19 @@ class UpdateCustomerRequest extends FormRequest
             'city' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:20'],
             'postalCode' => ['required', 'string', 'max:10'],
-        ] : [
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'type' => ['sometimes', 'required', 'string', 'max:1', Rule::in(CustomerType::toArray())],
-            'email' => ['sometimes', 'required', 'email', 'max:255', 'unique:customers'],
-            'address' => ['sometimes', 'required', 'string', 'max:255'],
-            'city' => ['sometimes', 'required', 'string', 'max:255'],
-            'state' => ['sometimes', 'required', 'string', 'max:20'],
-            'postalCode' => ['sometimes', 'required', 'string', 'max:10'],
         ];
+
+        return $this->method() === 'PUT'
+            ? $rules
+            : array_map(fn (array $rule) => ['sometimes', ...$rule], $rules);
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): Request
     {
-        if ($this->postal_code) {
-            return $this->merge([
-                'postal_code' => $this->postalCode,
-            ]);
+        if ($postalCode = $this->{'postalCode'}) {
+            return $this->merge(['postal_code' => $postalCode]);
         }
+
+        return $this;
     }
 }

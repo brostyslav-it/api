@@ -10,6 +10,7 @@ use App\Http\Resources\InvoiceResource;
 use App\Models\Invoice\Invoice;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class InvoiceController extends Controller
 {
@@ -32,15 +33,17 @@ class InvoiceController extends Controller
         return new InvoiceResource($invoice);
     }
 
-    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
+    public function update(UpdateInvoiceRequest $request, Invoice $invoice): InvoiceResource
     {
+        $invoice->update($request->all());
 
+        return new InvoiceResource($invoice);
     }
 
     public function destroy(Invoice $invoice): void
     {
         if (!request()->user()->tokenCan('delete')) {
-            abort(403);
+            throw new AccessDeniedHttpException();
         }
         $invoice->delete();
     }

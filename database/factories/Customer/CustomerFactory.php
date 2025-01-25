@@ -1,19 +1,19 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Customer;
 
+use App\Models\Customer\Enums\CustomerType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CustomerFactory extends Factory
 {
-    protected array $customerTypes = ['I', 'B'];
 
     public function definition(): array
     {
-        $type = $this->faker->randomElement($this->customerTypes);
+        $type = $this->faker->randomElement(CustomerType::toArray());
 
         return [
-            'name' => $type === 'I' ? $this->faker->name() : $this->faker->company(),
+            'name' => $type === CustomerType::INDIVIDUAL->value ? $this->faker->name() : $this->faker->company(),
             'type' => $type,
             'email' => $this->faker->unique()->safeEmail(),
             'address' => $this->faker->address(),

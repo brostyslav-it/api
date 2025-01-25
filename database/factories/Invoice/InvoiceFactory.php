@@ -1,15 +1,16 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Invoice;
 
 use App\Models\Customer\Customer;
+use App\Models\Invoice\Enums\InvoiceStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvoiceFactory extends Factory
 {
     public function definition(): array
     {
-        $status = $this->faker->randomElement(['B', 'P', 'V']);
+        $status = $this->faker->randomElement(InvoiceStatus::toArray());
 
         return [
             'customer_id' => Customer::factory(),
